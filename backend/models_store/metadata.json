@@ -1,0 +1,164 @@
+{
+  "training_timestamp": "2026-08-30T18:34:11.938016",
+  "total_samples": 5040,
+  "train_samples": 4032,
+  "test_samples": 1008,
+  "split_strategy": "Temporal 80/20 split (zero data leakage)",
+  "models": {
+    "production_model": {
+      "name": "Production Rate Predictor",
+      "version": "v1.2",
+      "confidence_tier": "HIGH_CONFIDENCE_EMPIRICAL",
+      "algorithm": "GradientBoostingRegressor",
+      "features": [
+        "temperature",
+        "pressure",
+        "viscosity",
+        "spm",
+        "stroke",
+        "vfd",
+        "rod_load"
+      ],
+      "target": "oil_rate (BOPD)",
+      "metrics": {
+        "r2": 0.9994,
+        "mae": 0.226,
+        "rmse": 0.282
+      },
+      "feature_importances": {
+        "temperature": 0.0001,
+        "pressure": 0.9999,
+        "viscosity": 0.0001,
+        "spm": 0.0,
+        "stroke": 0.0,
+        "vfd": 0.0,
+        "rod_load": 0.0
+      }
+    },
+    "thermal_model": {
+      "name": "Reservoir Thermal Decay Predictor",
+      "version": "v1.1",
+      "confidence_tier": "HIGH_CONFIDENCE_EMPIRICAL",
+      "algorithm": "RandomForestRegressor",
+      "features": [
+        "temperature",
+        "viscosity",
+        "spm",
+        "oil_rate",
+        "water_rate"
+      ],
+      "target": "temperature (\u00b0C)",
+      "metrics": {
+        "r2": 0.9988,
+        "mae": 0.62,
+        "rmse": 0.85
+      },
+      "feature_importances": {
+        "temperature": 0.3195,
+        "viscosity": 0.6805,
+        "spm": 0.0,
+        "oil_rate": 0.0,
+        "water_rate": 0.0
+      }
+    },
+    "rod_floating_model": {
+      "name": "Downstroke Rod Floating Classifier",
+      "version": "v1.3",
+      "confidence_tier": "HIGH_CONFIDENCE_EMPIRICAL",
+      "algorithm": "RandomForestClassifier",
+      "features": [
+        "rod_load",
+        "pump_load",
+        "spm",
+        "vfd",
+        "stroke",
+        "temperature",
+        "viscosity",
+        "oil_rate",
+        "mprl"
+      ],
+      "target": "is_rod_floating (Elevated Hazard)",
+      "metrics": {
+        "precision": 0.8829,
+        "recall": 0.6164,
+        "f1": 0.7259,
+        "roc_auc": 0.9407
+      },
+      "feature_importances": {
+        "rod_load": 0.3663,
+        "pump_load": 0.0,
+        "spm": 0.0401,
+        "vfd": 0.0099,
+        "stroke": 0.0051,
+        "temperature": 0.1439,
+        "viscosity": 0.1393,
+        "oil_rate": 0.055,
+        "mprl": 0.2404
+      }
+    },
+    "rod_failure_model": {
+      "name": "30-Day Rod String Failure Predictor",
+      "version": "v1.2",
+      "confidence_tier": "EARLY_WARNING_SCREENING",
+      "algorithm": "XGBClassifier",
+      "features": [
+        "rod_load",
+        "pprl",
+        "mprl",
+        "spm",
+        "stroke",
+        "viscosity",
+        "floating_risk",
+        "energy"
+      ],
+      "target": "is_rod_failure_imminent",
+      "metrics": {
+        "precision": 0.5783,
+        "recall": 0.3563,
+        "f1": 0.4409,
+        "roc_auc": 0.5434
+      },
+      "feature_importances": {
+        "rod_load": 0.0716,
+        "pprl": 0.0645,
+        "mprl": 0.0985,
+        "spm": 0.0869,
+        "stroke": 0.1704,
+        "viscosity": 0.133,
+        "floating_risk": 0.2953,
+        "energy": 0.0799
+      }
+    },
+    "pump_unsetting_model": {
+      "name": "Downhole Pump Unsetting Risk Estimator",
+      "version": "v1.0",
+      "confidence_tier": "EARLY_WARNING_SCREENING",
+      "algorithm": "LogisticRegression",
+      "features": [
+        "pump_load",
+        "rod_load",
+        "spm",
+        "vfd",
+        "viscosity",
+        "temperature",
+        "oil_rate"
+      ],
+      "target": "is_pump_unsetting_hazard",
+      "metrics": {
+        "precision": 0.4545,
+        "recall": 0.0763,
+        "f1": 0.1307,
+        "roc_auc": 0.5446
+      },
+      "feature_importances": {
+        "pump_load": 0.7792,
+        "rod_load": 0.3315,
+        "spm": 0.4288,
+        "vfd": 0.0683,
+        "viscosity": 0.0004,
+        "temperature": 0.0279,
+        "oil_rate": 0.06
+      }
+    }
+  }
+}
