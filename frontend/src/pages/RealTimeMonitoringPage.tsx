@@ -28,9 +28,18 @@ export const RealTimeMonitoringPage: React.FC = () => {
     if (!selectedWellId) return;
 
     // Connect WebSocket
-    const apiUrl = import.meta.env.VITE_API_URL || '';
-    const apiHost = apiUrl ? apiUrl.replace(/^https?:\/\//, '') : window.location.host;
-    const isHttps = apiUrl.startsWith('https') || window.location.protocol === 'https:';
+    const apiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+    let apiHost = window.location.host;
+    let isHttps = window.location.protocol === 'https:';
+
+    if (apiUrl) {
+      apiHost = apiUrl.replace(/^https?:\/\//, '');
+      isHttps = apiUrl.startsWith('https');
+    } else if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+      apiHost = 'baghewala-digital-twin-backend.onrender.com';
+      isHttps = true;
+    }
+
     const protocol = isHttps ? 'wss:' : 'ws:';
     const wsUrl = `${protocol}//${apiHost}/api/v1/telemetry/ws/${selectedWellId}`;
     

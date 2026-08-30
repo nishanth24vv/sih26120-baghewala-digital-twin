@@ -4,8 +4,16 @@ import {
   AuditItem, ModelMetadata, TelemetryTick
 } from '../types';
 
-const RAW_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
-const API_BASE = RAW_BASE ? `${RAW_BASE}/api/v1` : '/api/v1';
+const getApiBase = () => {
+  const envUrl = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+  if (envUrl) return `${envUrl}/api/v1`;
+  if (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')) {
+    return 'https://baghewala-digital-twin-backend.onrender.com/api/v1';
+  }
+  return '/api/v1';
+};
+
+const API_BASE = getApiBase();
 
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {
