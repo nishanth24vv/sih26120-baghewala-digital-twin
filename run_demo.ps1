@@ -20,16 +20,16 @@ Write-Host "`n[2/4] Initializing Database & ML Models..." -ForegroundColor Yello
 & "$rootDir\backend\venv\Scripts\python.exe" "$rootDir\backend\scripts\train_models.py"
 
 # 3. Backend
-Write-Host "`n[3/4] Launching FastAPI Backend on http://127.0.0.1:8000 ..." -ForegroundColor Yellow
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$rootDir\backend'; .\venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000 --reload"
+Write-Host "`n[3/4] Launching FastAPI Backend on http://127.0.0.1:8002 ..." -ForegroundColor Yellow
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$rootDir\backend'; .\venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8002 --reload"
 
 # 4. Frontend
-Write-Host "`n[4/4] Launching React Vite Frontend on http://localhost:5173 ..." -ForegroundColor Yellow
+Write-Host "`n[4/4] Launching React Vite Frontend on http://localhost:5174 ..." -ForegroundColor Yellow
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$rootDir\frontend'; npm run dev"
 
 Write-Host "`n===============================================================================" -ForegroundColor Green
 Write-Host "  DIGITAL TWIN RUNNING LOCALLY & 100% OFFLINE-READY!" -ForegroundColor Green
-Write-Host "  Frontend Dashboard:  http://localhost:5173" -ForegroundColor White
-Write-Host "  Backend API Swagger: http://127.0.0.1:8000/docs" -ForegroundColor White
-Write-Host "  Health Check:        http://127.0.0.1:8000/health" -ForegroundColor White
+Write-Host "  Frontend Dashboard:  http://localhost:5174" -ForegroundColor White
+Write-Host "  Backend API Swagger: http://127.0.0.1:8002/docs" -ForegroundColor White
+Write-Host "  Health Check:        http://127.0.0.1:8002/health" -ForegroundColor White
 Write-Host "===============================================================================" -ForegroundColor Green

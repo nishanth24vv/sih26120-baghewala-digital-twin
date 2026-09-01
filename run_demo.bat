@@ -18,10 +18,10 @@ echo [2/4] Initializing Database and ML Models...
 backend\venv\Scripts\python backend\scripts\generate_synthetic_data.py
 backend\venv\Scripts\python backend\scripts\train_models.py
 
-echo [3/4] Starting FastAPI Backend on http://127.0.0.1:8000 ...
-start "Baghewala Backend" cmd /k "backend\venv\Scripts\uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
+echo [3/4] Starting FastAPI Backend on http://127.0.0.1:8002 ...
+start "Baghewala Backend" cmd /k "backend\venv\Scripts\uvicorn app.main:app --host 127.0.0.1 --port 8002 --reload"
 
-echo [4/4] Starting Vite Frontend on http://localhost:5173 ...
+echo [4/4] Starting Vite Frontend on http://localhost:5174 ...
 cd frontend
 if not exist "node_modules" (
     call npm install
@@ -31,8 +31,8 @@ start "Baghewala Frontend" cmd /k "npm run dev"
 echo.
 echo ===============================================================================
 echo   APPLICATION LAUNCHED SUCCESSFULLY!
-echo   Frontend Dashboard:  http://localhost:5173
-echo   Backend API Swagger: http://127.0.0.1:8000/docs
-echo   Health Check:        http://127.0.0.1:8000/health
+echo   Frontend Dashboard:  http://localhost:5174
+echo   Backend API Swagger: http://127.0.0.1:8002/docs
+echo   Health Check:        http://127.0.0.1:8002/health
 echo ===============================================================================
 pause
